@@ -3,6 +3,7 @@ import os
 import environs
 from pathlib import Path
 
+from django.urls import reverse_lazy
 
 env = environs.Env()
 env.read_env('.env')
@@ -19,7 +20,12 @@ SECRET_KEY = env('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = env('DEBUG')
 
-ALLOWED_HOSTS = env('ALLOWED_HOSTS', "127.0.0.1").split(" ")
+ALLOWED_HOSTS = [
+    'mysite.com',
+    'localhost',
+    '127.0.0.1',
+    '205b-46-0-16-81.eu.ngrok.io',
+]
 
 
 # Application definition
@@ -33,6 +39,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'images.apps.ImagesConfig',
+
+    'sorl.thumbnail',
 ]
 
 MIDDLEWARE = [
@@ -140,3 +149,7 @@ AUTHENTICATION_BACKEND = [
     'django.contrib.auth.backends.ModelBackend',
     'account.authentication.EmailAuthBackend',
 ]
+
+ABSOLUTE_URL_OVERRIDES = {
+    'auth.user': lambda u: reverse_lazy('user_detail', args=[u.username])
+}
