@@ -3,6 +3,7 @@ import os
 import environs
 from pathlib import Path
 
+from django.urls import reverse_lazy
 
 env = environs.Env()
 env.read_env('.env')
@@ -148,3 +149,7 @@ AUTHENTICATION_BACKEND = [
     'django.contrib.auth.backends.ModelBackend',
     'account.authentication.EmailAuthBackend',
 ]
+
+ABSOLUTE_URL_OVERRIDES = {
+    'auth.user': lambda u: reverse_lazy('user_detail', args=[u.username])
+}
