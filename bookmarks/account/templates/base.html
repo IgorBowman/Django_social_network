@@ -23,9 +23,10 @@
                     </li>
                 </ul>
             {% endif %}
+
             <span class="user">
                 {% if request.user.is_authenticated %}
-                Hello {{ user.username }},
+                Hello {{ user.user.first_name }},
                     <a href="{% url 'logout' %}">Log out</a>
                 {% else %}
                     <a href="{% url 'login' %}">Log in</a>
@@ -50,7 +51,6 @@
       <script>
         var csrftoken = Cookies.get('csrftoken');
         function csrfSafeMethod(method) {
-          // these HTTP methods do not require CSRF protection
           return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
         }
         $.ajaxSetup({
