@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'images.apps.ImagesConfig',
+    'actions.apps.ActionsConfig',
 
     'sorl.thumbnail',
 ]
