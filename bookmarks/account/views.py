@@ -57,12 +57,14 @@ def register(request):
 def dashboard(request):
     actions = Action.objects.exclude(user=request.user)
     following_ids = request.user.following.values_list('id', flat=True)
+
     if following_ids:
         actions = actions.filter(user_id__in=following_ids)
-    actions = actions.select_related('user', 'user__profile').prefetch_related('target')[:10]
+    actions = actions.select_related('user', 'user__profile').prefetch_related(
+        'target')[:10]
 
     return render(request, 'account/dashboard.html',
-                  {'selection': dashboard, 'actions': actions})
+                  {'section': 'dashboard', 'actions': actions})
 
 
 @login_required
@@ -113,10 +115,12 @@ def user_follow(request):
         try:
             user = User.objects.get(id=user_id)
             if action == 'follow':
-                Contact.objects.get_or_create(user_from=request.user, user_to=user)
+                Contact.objects.get_or_create(user_from=request.user,
+                                              user_to=user)
                 created_action(request.user, 'is following', user)
             else:
-                Contact.objects.filter(user_from=request.user, user_to=user).delete()
+                Contact.objects.filter(user_from=request.user,
+                                       user_to=user).delete()
             return JsonResponse({'status': 'ok'})
         except User.DoesNotExist:
             return JsonResponse({'status': 'ok'})

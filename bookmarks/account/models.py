@@ -27,6 +27,6 @@ class Contact(models.Model):
         return f'{self.user_from} follows {self.user_to}'
 
 
-User.add_to_class('folling', models.ManyToManyField('self', through=Contact,
-                                                    related_name='followers',
-                                                    symmetrical=False))
+User.add_to_class('following', models.ManyToManyField('self', through=Contact,
+                                                      related_name='followers',
+                                                      symmetrical=False))
